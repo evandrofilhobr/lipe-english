@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Felipe's English Test Prep</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&family=Patrick+Hand&display=swap">
+<style>
+/* Layout: a spiral-notebook page. Ruled paper ground, one column of exercise "worksheets", pencil-yellow progress strip pinned on top. */
+:root {
+  --paper: #fbfcff;
+  --rule: #dbe5f5;
+  --margin: #f3b3b8;
+  --ink: #1f3b73;
+  --ink-soft: #5a6f9a;
+  --pencil: #f6c343;
+  --pencil-deep: #b88a10;
+  --card: #ffffff;
+  --line: #c9d6ee;
+  --good: #2e8b57;
+  --good-bg: #e3f5ea;
+  --bad: #c2413a;
+  --bad-bg: #fbe6e4;
+  --chip: #eef3fc;
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Nunito", "Segoe UI", system-ui, sans-serif;
+  --hand: "Patrick Hand", "Comic Sans MS", "Chalkboard SE", cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #141b2b; --rule: #1f2a40; --margin: #5a2a33; --ink: #dfe8ff; --ink-soft: #9fb0d6;
+    --pencil: #f6c343; --pencil-deep: #f6c343; --card: #1b2438; --line: #2c3a58;
+    --good: #6fd39a; --good-bg: #173326; --bad: #ff8a80; --bad-bg: #3a1d1f; --chip: #24304a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #141b2b; --rule: #1f2a40; --margin: #5a2a33; --ink: #dfe8ff; --ink-soft: #9fb0d6;
+  --pencil: #f6c343; --pencil-deep: #f6c343; --card: #1b2438; --line: #2c3a58;
+  --good: #6fd39a; --good-bg: #173326; --bad: #ff8a80; --bad-bg: #3a1d1f; --chip: #24304a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(90deg, transparent 38px, var(--margin) 38px, var(--margin) 40px, transparent 40px),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule) 31px, var(--rule) 32px);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.5;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--pencil);
+}
+.wrap {
+  max-width: 760px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 64px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--pencil); color: #3a2a00;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 10px;
+  box-shadow: 0 2px 0 var(--pencil-deep);
+}
+.bar-in { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.bar strong { font-family: var(--display); font-size: 1.15rem; }
+.meter { flex: 1 1 160px; height: 14px; background: rgba(0,0,0,.12); border-radius: 99px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: #3a2a00; border-radius: 99px; transition: width .3s; }
+.score { font-variant-numeric: tabular-nums; font-weight: 800; }
+header.hero { padding-left: 34px; display: flex; flex-direction: column; gap: 6px; }
+header.hero h1 {
+  font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 6vw, 2.9rem);
+  line-height: 1.05; margin: 0; text-wrap: balance;
+}
+header.hero p { margin: 0; color: var(--ink-soft); max-width: 60ch; }
+.tag { font-family: var(--hand); font-size: 1.25rem; color: var(--bad); transform: rotate(-2deg); display: inline-block; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 34px; }
+nav.jump a {
+  font-weight: 800; font-size: .9rem; text-decoration: none; color: var(--ink);
+  background: var(--chip); border: 1px solid var(--line); padding: 4px 12px; border-radius: 99px;
+}
+nav.jump a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--pencil-deep); outline-offset: 2px; }
+section.sheet {
+  background: var(--card); border: 1.5px solid var(--line); border-radius: 6px;
+  padding: 20px 18px 22px; display: flex; flex-direction: column; gap: 16px;
+  scroll-margin-top: 70px;
+}
+.sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.sheet h2 { font-family: var(--display); font-weight: 800; font-size: 1.5rem; margin: 0; line-height: 1.1; }
+.sheet h2 small { display: block; font-family: var(--body); font-weight: 600; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.sec-score { font-family: var(--hand); font-size: 1.3rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.howto { margin: 0; color: var(--ink-soft); font-size: .95rem; }
+.howto b { color: var(--ink); }
+.rule-box {
+  background: var(--chip); border-radius: 6px; padding: 12px 14px; font-size: .95rem;
+  display: grid; gap: 4px;
+}
+.rule-box code { font-family: var(--hand); font-size: 1.15rem; color: var(--ink); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.pic {
+  border: 1.5px solid var(--line); border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 8px; align-items: stretch;
+  background: var(--paper);
+}
+.pic .em { font-size: 2.6rem; text-align: center; line-height: 1.1; }
+.pic input { font-family: var(--hand); font-size: 1.35rem; text-align: center; text-transform: uppercase; }
+input[type=text] {
+  width: 100%; min-width: 0; border: none; border-bottom: 2px solid var(--line); background: transparent; color: var(--ink);
+  padding: 4px 2px; border-radius: 0;
+}
+.row { display: flex; gap: 6px; }
+.row button { flex: 1; }
+button {
+  font-family: var(--body); font-weight: 800; font-size: .9rem; cursor: pointer;
+  border: 1.5px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 6px; padding: 7px 10px;
+}
+button:hover { border-color: var(--ink-soft); }
+button.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ok { background: var(--good-bg) !important; border-color: var(--good) !important; }
+.no { background: var(--bad-bg) !important; border-color: var(--bad) !important; }
+.fb { font-size: .88rem; min-height: 1.2em; font-weight: 700; }
+.fb.g { color: var(--good); }
+.fb.b { color: var(--bad); }
+.q { display: flex; flex-direction: column; gap: 8px; padding-block: 10px; border-top: 1px dashed var(--line); }
+.q:first-of-type { border-top: none; }
+.q .stem { font-size: 1.05rem; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.q .stem .em { font-size: 1.8rem; }
+.blank { font-family: var(--hand); font-size: 1.25rem; color: var(--ink-soft); }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choices button { font-family: var(--hand); font-size: 1.15rem; font-weight: 400; padding: 6px 14px; }
+.scene {
+  border: 1.5px solid var(--line); border-radius: 6px; padding: 14px; background: var(--paper);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; text-align: center;
+}
+.scene div { display: flex; flex-direction: column; gap: 2px; }
+.scene .em { font-size: 2rem; }
+.scene span { font-size: .85rem; color: var(--ink-soft); }
+.fridge {
+  border: 3px solid var(--ink-soft); border-radius: 12px; padding: 10px; display: grid; gap: 8px; max-width: 320px; background: var(--paper);
+}
+.shelf { border-bottom: 3px solid var(--line); padding: 6px; font-size: 1.9rem; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.shelf:last-child { border-bottom: none; }
+.fridge-wrap { display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-start; }
+.fridge-wrap > div:last-child { flex: 1 1 260px; min-width: 0; }
+.legend { font-size: .9rem; color: var(--ink-soft); display: grid; gap: 2px; }
+.tips { display: grid; gap: 8px; }
+.tips div { display: flex; gap: 10px; align-items: baseline; }
+.tips b { font-family: var(--hand); font-size: 1.25rem; font-weight: 400; color: var(--bad); white-space: nowrap; }
+footer { padding-left: 34px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; color: var(--ink-soft); font-size: .9rem; }
+.done-msg { font-family: var(--display); font-size: 1.4rem; color: var(--good); }
+.pic .em.pattern { font-family: var(--hand); font-size: 1.35rem; letter-spacing: .04em; }
+.hand { font-family: var(--hand); font-size: 1.1rem; }
+.report { border-color: var(--good); }
+.report-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+button.send { background: var(--good); color: var(--card); border-color: var(--good); font-size: 1.05rem; padding: 12px 18px; }
+.report-text {
+  margin: 0; white-space: pre-wrap; word-break: break-word; font-family: var(--body); font-size: .85rem;
+  background: var(--chip); border-radius: 6px; padding: 12px; max-height: 260px; overflow: auto; color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) { .meter i { transition: none; } }
+@media (max-width: 480px) {
+  header.hero, nav.jump, footer { padding-left: 28px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <strong>Felipe's Test Prep</strong>
+  <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+  <span class="score" id="total">0 / 0</span>
+</div></div>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="tag">Test tomorrow! 💪</span>
+    <h1>Food, Fridge and Animals</h1>
+    <p>Y3, 3rd Term. Units 7 and 8 from your Study Guide and the Look book. Answer everything, then check your score at the top. Erre à vontade: cada erro mostra a dica certa.</p>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <a href="#foods">Foods</a><a href="#fridge">Fridge</a><a href="#asomeany">a / some / any</a>
+    <a href="#animals">Animals</a><a href="#yesno">Yes / No</a><a href="#compare">Compare</a><a href="#review">Review</a><a href="#words">Words</a><a href="#watch">Watch out</a><a href="#report">Send</a>
+  </nav>
+
+  <section class="sheet" id="foods">
+    <div class="sheet-head"><h2><small>Part 1 · Unit 7</small>Name the foods</h2><span class="sec-score" data-sec="foods"></span></div>
+    <p class="howto">Write the word in English. <b>Check</b> to see if it's right. <b>Hint</b> shows the first letter.</p>
+    <div class="grid" data-spell="foods"></div>
+  </section>
+
+  <section class="sheet" id="fridge">
+    <div class="sheet-head"><h2><small>Part 2 · Study Guide III</small>Look at the fridge</h2><span class="sec-score" data-sec="fridge"></span></div>
+    <div class="rule-box">
+      <div><code>There is</code> / <code>There isn't</code> → one thing, or things we can't count: chicken, cheese, juice, milk.</div>
+      <div><code>There are</code> / <code>There aren't</code> → many things: pears, eggs, grapes.</div>
+    </div>
+    <div class="fridge-wrap">
+      <div>
+        <div class="fridge" aria-label="Fridge with cheese, chicken, pears, grape juice and water">
+          <div class="shelf">🧀 🍗</div>
+          <div class="shelf">🍐 🍐 🍐 🍐</div>
+          <div class="shelf">🧃 💧 💧 💧</div>
+        </div>
+        <div class="legend"><span>🧃 = grape juice</span><span>No eggs, no grapes, no orange juice</span></div>
+      </div>
+      <div data-mc="fridge"></div>
+    </div>
+  </section>
+
+  <section class="sheet" id="asomeany">
+    <div class="sheet-head"><h2><small>Part 3 · Unit 7</small>a, some or any?</h2><span class="sec-score" data-sec="asomeany"></span></div>
+    <div class="rule-box">
+      <div><code>a</code> → one thing: <i>There's a pear.</i> (an + vowel: <i>an egg, an apple</i>)</div>
+      <div><code>some</code> → yes sentences: <i>There are some eggs. There's some milk.</i></div>
+      <div><code>any</code> → no sentences: <i>There isn't any juice. There aren't any sausages.</i></div>
+    </div>
+    <div data-mc="asomeany"></div>
+  </section>
+
+  <section class="sheet" id="animals">
+    <div class="sheet-head"><h2><small>Part 4 · Unit 8</small>Name the animals</h2><span class="sec-score" data-sec="animals"></span></div>
+    <p class="howto">Careful with spelling! <b>giraffe</b> has two F's. <b>monkey</b> ends in -EY.</p>
+    <div class="grid" data-spell="animals"></div>
+  </section>
+
+  <section class="sheet" id="yesno">
+    <div class="sheet-head"><h2><small>Part 5 · Study Guide I</small>Look and answer</h2><span class="sec-score" data-sec="yesno"></span></div>
+    <div class="scene">
+      <div><span class="em">🦁💨</span><span>The lion is running.</span></div>
+      <div><span class="em">🦒🌿</span><span>The giraffe is eating.</span></div>
+      <div><span class="em">🐊🐊😴</span><span>The crocodiles are sleeping.</span></div>
+      <div><span class="em">🦓🦓💧</span><span>The zebras are drinking.</span></div>
+      <div><span class="em">🐘🧍</span><span>The elephant is standing.</span></div>
+      <div><span class="em">🐍😴</span><span>The snake is sleeping.</span></div>
+    </div>
+    <div class="rule-box">
+      <div>One animal → <code>Yes, it is.</code> / <code>No, it isn't.</code></div>
+      <div>Two or more (the zebras, the crocodiles) → <code>Yes, they are.</code> / <code>No, they aren't.</code></div>
+    </div>
+    <div data-mc="yesno"></div>
+  </section>
+
+  <section class="sheet" id="compare">
+    <div class="sheet-head"><h2><small>Part 6 · Unit 8</small>Compare the animals</h2><span class="sec-score" data-sec="compare"></span></div>
+    <div class="rule-box">
+      <div><code>small → smaller</code> · <code>fast → faster</code> · <code>slow → slower</code> · <code>long → longer</code></div>
+      <div><code>big → bigger</code> (two G's!) · and always <code>than</code>: <i>A snake is longer than a monkey.</i></div>
+    </div>
+    <div data-mc="compare"></div>
+  </section>
+
+  <section class="sheet" id="review">
+    <div class="sheet-head"><h2><small>Part 7 · Review 4, Units 7–8</small>Book review</h2><span class="sec-score" data-sec="review"></span></div>
+    <p class="howto"><b>Which one doesn't belong?</b> Three are the same kind of thing. Find the different one.</p>
+    <div data-mc="review"></div>
+  </section>
+
+  <section class="sheet" id="words">
+    <div class="sheet-head"><h2><small>Part 8 · Review 4</small>Finish the words</h2><span class="sec-score" data-sec="words"></span></div>
+    <p class="howto">Look at the first letters and write the <b>whole word</b>. Use: <code class="hand">br cr dr fr gr ng pr tr</code></p>
+    <div class="grid" data-spell="words"></div>
+  </section>
+
+  <section class="sheet" id="watch">
+    <div class="sheet-head"><h2><small>From your homework</small>Watch out tomorrow</h2></div>
+    <div class="tips">
+      <div><b>GRAPES</b><span>not "graps". One grape, many grapes.</span></div>
+      <div><b>MONKEY</b><span>not "monk".</span></div>
+      <div><b>GIRAFFE</b><span>one R, two F's.</span></div>
+      <div><b>they aren't</b><span>for two or more: <i>Are the crocodiles eating? No, they aren't.</i></span></div>
+      <div><b>a pear</b><span>one thing → a. Don't leave it blank!</span></div>
+      <div><b>bigger</b><span>big gets two G's.</span></div>
+    </div>
+  </section>
+
+  <section class="sheet report" id="report">
+    <div class="sheet-head"><h2><small>Last step</small>Send to Papai</h2></div>
+    <p class="howto">When you finish, tap the green button. Papai gets your answers on WhatsApp and corrects them with you.</p>
+    <div class="report-actions">
+      <button class="send" id="send" type="button">Send my answers to Papai</button>
+      <button id="copy" type="button">Copy answers</button>
+    </div>
+    <div class="fb" id="sendfb" aria-live="polite"></div>
+    <pre class="report-text" id="reportText"></pre>
+  </section>
+
+  <footer>
+    <span class="done-msg" id="done" hidden>All done! Great job, Lipe! 🎉</span>
+    <button class="primary" id="reset" type="button">Start again</button>
+    <span>Made by Papai for the English test.</span>
+  </footer>
+</div>
+
+<script>
+const PAGE_ID = "y3-term3-units7-8";
+const PAGE_LABEL = "Y3 3rd Term, Units 7-8 (foods, fridge, animals)";
+
+const DATA = {
+  foods: [
+    ["🧀","cheese"],["🌭","sausage",["sausages"]],["🍟","fries"],["🧃","juice"],
+    ["🍗","chicken"],["🥭","mango"],["🍇","grapes"],["🫛","beans"],
+    ["🍞","bread"],["🥚","egg"],["🍐","pear"],["🍅","tomato",["tomatoes"]],
+    ["🥛","milk"],["🍚","rice"],["🥕","carrots",["carrot"]],["🍎","apple"]
+  ],
+  animals: [
+    ["🦁","lion"],["🦛","hippo"],["🦒","giraffe"],["🐍","snake"],["🐊","crocodile",["crocodiles","croc"]],
+    ["🐒","monkey"],["🐘","elephant"],["🐅","tiger"],["🦓","zebra"],["🦏","rhino"],["🐑","sheep"]
+  ],
+  words: [
+    ["🍇 gr _ _ _ _","grapes"],["🍞 br _ _ _","bread"],["🌳 tr _ _","tree"],["🍟 fr _ _ _ _","fries"],
+    ["🎤 si _ _","sing"],["👗 dr _ _ _","dress"],["💰 m _ _ _ y","money"],["🍴 e _ _","eat"],
+    ["🧀 ch _ _ _ _ _","cheese"],["🥤 dr _ _ _","drink"],["🎉 f _ _ _ _ v _ l","festival"],["😃 e _ _ _ y","enjoy"]
+  ],
+  fridge: [
+    ["____ some chicken.",["There is","There are"],0,"Chicken: we can't count it → There is."],
+    ["____ some pears.",["There is","There are"],1,"Many pears → There are."],
+    ["____ any eggs.",["There isn't","There aren't"],1,"No eggs, and eggs are many → There aren't."],
+    ["____ some grape juice.",["There is","There are"],0,"Juice → There is."],
+    ["____ any grapes.",["There isn't","There aren't"],1,"No grapes → There aren't."],
+    ["____ any orange juice.",["There isn't","There aren't"],0,"No orange juice → There isn't."],
+    ["____ some cheese.",["There is","There are"],0,"Cheese → There is."]
+  ],
+  asomeany: [
+    ["There are ____ tomatoes.",["a","some","any"],1,"Yes sentence, many → some."],
+    ["There isn't ____ chicken.",["a","some","any"],2,"No sentence → any."],
+    ["There aren't ____ beans.",["a","some","any"],2,"No sentence → any."],
+    ["There's ____ pear.",["a","some","any"],0,"One pear → a."],
+    ["There's ____ cheese.",["a","some","any"],1,"Yes sentence, cheese → some."],
+    ["There's ____ mango.",["a","some","any"],0,"One mango → a."],
+    ["There are ____ eggs.",["a","some","any"],1,"Yes, many eggs → some."],
+    ["There isn't ____ milk.",["a","some","any"],2,"No sentence → any."]
+  ],
+  yesno: [
+    ["Is the lion running?",["Yes, it is.","No, it isn't.","Yes, they are.","No, they aren't."],0,"One lion, and it is running."],
+    ["Is the giraffe sleeping?",["Yes, it is.","No, it isn't.","Yes, they are.","No, they aren't."],1,"The giraffe is eating, not sleeping."],
+    ["Are the crocodiles eating?",["Yes, it is.","No, it isn't.","Yes, they are.","No, they aren't."],3,"Two crocodiles → they. They are sleeping."],
+    ["Are the zebras drinking?",["Yes, it is.","No, it isn't.","Yes, they are.","No, they aren't."],2,"Zebras → they. Yes, they are drinking."],
+    ["Is the elephant sitting?",["Yes, it is.","No, it isn't.","Yes, they are.","No, they aren't."],1,"The elephant is standing."],
+    ["Is the snake sleeping?",["Yes, it is.","No, it isn't.","Yes, they are.","No, they aren't."],0,"One snake, and it is sleeping."],
+    ["Are the crocodiles sleeping?",["Yes, it is.","No, it isn't.","Yes, they are.","No, they aren't."],2,"Crocodiles → they. Yes!"]
+  ],
+  compare: [
+    ["🐒 🦒 A monkey is ____ than a giraffe.",["smaller","bigger"],0,"A monkey is small, a giraffe is very tall."],
+    ["🐅 🐊 A tiger is ____ than a crocodile.",["faster","slower"],0,"Tigers run very fast."],
+    ["🐊 🐒 A crocodile is ____ than a monkey.",["longer","shorter"],0,"Crocodiles are long."],
+    ["🦓 🐍 A zebra is ____ than a snake.",["bigger","smaller"],0,"Big → bigger (two G's)."],
+    ["🦛 🐅 A hippo is ____ than a tiger.",["slower","faster"],0,"Hippos are slow."],
+    ["🦒 🐍 A giraffe is ____ than a snake.",["bigger","smaller"],0,"Giraffes are very big."],
+    ["🐍 🐒 A snake is ____ than a monkey.",["longer","shorter"],0,"Snakes are long."],
+    ["🐘 🦁 An elephant is ____ than a lion.",["slower","faster"],0,"Lions are fast, elephants are slow."],
+    ["Which one is right?",["A elephant is bigger than a lion.","An elephant is bigger than a lion.","An elephant is more big than a lion."],1,"An + vowel sound (elephant). And big → bigger."]
+  ],
+  review: [
+    ["Which one doesn't belong?",["hold","dance","beans"],2,"Hold and dance are actions. Beans is a food."],
+    ["Which one doesn't belong?",["mango","balloon","pear"],1,"Mango and pear are fruits. Balloon is not food."],
+    ["Which one doesn't belong?",["chicken","lemonade","juice"],0,"Lemonade and juice are drinks. Chicken is food."],
+    ["Which one doesn't belong?",["listen to music","take photos","sausage"],2,"The others are actions. Sausage is food."],
+    ["I'm ____ a balloon.",["hold","holding"],1,"I'm + -ing: I'm holding."],
+    ["There's ____ cheese.",["a","some"],1,"Cheese → some."],
+    ["____ some pears.",["There are","There is"],0,"Many pears → There are."]
+  ]
+};
+const SEC_NAMES = { foods:"Foods", fridge:"Fridge", asomeany:"a/some/any", animals:"Animals", yesno:"Yes/No", compare:"Compare", review:"Review", words:"Words" };
+
+// log[sec][i] = { label, answer, tries: [ ... ], ok }
+let log = {};
+const counts = {};
+const KEY = "lipe-prep-" + PAGE_ID;
+let startedAt = null;
+
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ log, startedAt })); } catch (e) {} }
+function load() { try { const v = JSON.parse(localStorage.getItem(KEY) || "null"); if (v) { log = v.log || {}; startedAt = v.startedAt || null; } } catch (e) {} }
+
+function entry(sec, i, label, answer) {
+  log[sec] = log[sec] || {};
+  log[sec][i] = log[sec][i] || { label, answer, tries: [], ok: false };
+  return log[sec][i];
+}
+function record(sec, i, label, answer, tried, ok) {
+  if (!startedAt) startedAt = new Date().toISOString();
+  const e = entry(sec, i, label, answer);
+  if (e.ok) return;
+  e.tries.push(tried);
+  if (ok) e.ok = true;
+  save(); render();
+}
+
+function render() {
+  let done = 0, tot = 0;
+  for (const sec in counts) {
+    const s = log[sec] || {};
+    const right = Object.values(s).filter(v => v.ok).length;
+    done += right; tot += counts[sec];
+    const el = document.querySelector('[data-sec="' + sec + '"]');
+    if (el) el.textContent = right + " / " + counts[sec] + (right === counts[sec] ? " ⭐" : "");
+  }
+  document.getElementById("total").textContent = done + " / " + tot;
+  document.getElementById("meter").style.width = (tot ? done / tot * 100 : 0) + "%";
+  document.getElementById("done").hidden = done !== tot;
+  document.getElementById("reportText").textContent = buildReport();
+}
+
+function buildReport() {
+  let tot = 0, firstTry = 0, solved = 0;
+  const wrongLines = [], skipped = [];
+  for (const sec in counts) {
+    const s = log[sec] || {};
+    for (let i = 0; i < counts[sec]; i++) {
+      tot++;
+      const e = s[i];
+      if (!e || !e.tries.length) { skipped.push(SEC_NAMES[sec]); continue; }
+      if (e.ok) solved++;
+      if (e.ok && e.tries.length === 1) { firstTry++; continue; }
+      const wrong = e.tries.filter(t => t.toLowerCase() !== e.answer.toLowerCase());
+      wrongLines.push("• [" + SEC_NAMES[sec] + "] " + e.label + "\n   wrote: " + wrong.join(" / ") + (e.ok ? "  → then got it: " + e.answer : "  → not solved (answer: " + e.answer + ")"));
+    }
+  }
+  const skipCount = skipped.length;
+  const now = new Date();
+  const when = now.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+  let out = "📘 Lipe – English practice\n" + PAGE_LABEL + "\n" + when + "\n\n";
+  out += "Right on first try: " + firstTry + " / " + tot + "\n";
+  out += "Solved in the end: " + solved + " / " + tot + "\n";
+  if (skipCount) {
+    const bySec = {};
+    skipped.forEach(n => bySec[n] = (bySec[n] || 0) + 1);
+    out += "Not done yet: " + Object.entries(bySec).map(([k, v]) => k + " (" + v + ")").join(", ") + "\n";
+  }
+  out += "\n";
+  out += wrongLines.length ? "Mistakes:\n" + wrongLines.join("\n") : "No mistakes so far! 🎉";
+  return out;
+}
+
+function norm(s) { return s.toLowerCase().replace(/[^a-z]/g, ""); }
+
+function buildSpell(box) {
+  const sec = box.dataset.spell;
+  counts[sec] = DATA[sec].length;
+  DATA[sec].forEach(([em, word, alts], i) => {
+    const card = document.createElement("div");
+    card.className = "pic";
+    const id = sec + "-" + i;
+    const isPattern = em.includes("_");
+    card.innerHTML =
+      '<div class="em' + (isPattern ? ' pattern' : '') + '" aria-hidden="true"></div>' +
+      '<input type="text" id="' + id + '" aria-label="Word ' + (i + 1) + '" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">' +
+      '<div class="row"><button type="button" data-a="check">Check</button><button type="button" data-a="hint">Hint</button></div>' +
+      '<div class="fb" aria-live="polite"></div>';
+    card.querySelector(".em").textContent = em;
+    const inp = card.querySelector("input"), fb = card.querySelector(".fb");
+    const ok = [word].concat(alts || []).map(norm);
+    const label = (isPattern ? em : em + " (picture)");
+    let hints = 0;
+    const prev = (log[sec] || {})[i];
+    if (prev && prev.ok) { inp.value = word.toUpperCase(); inp.classList.add("ok"); fb.className = "fb g"; fb.textContent = "Yes! " + word.toUpperCase(); }
+    function check() {
+      const raw = inp.value.trim();
+      const v = norm(raw);
+      if (!v) { fb.className = "fb b"; fb.textContent = "Write a word first."; return; }
+      if ((log[sec] || {})[i] && log[sec][i].ok) return;
+      if (ok.includes(v)) {
+        inp.classList.add("ok"); inp.classList.remove("no");
+        fb.className = "fb g"; fb.textContent = "Yes! " + word.toUpperCase();
+        record(sec, i, label, word, raw.toUpperCase(), true);
+      } else {
+        inp.classList.add("no");
+        fb.className = "fb b";
+        fb.textContent = v.length > 2 && word.startsWith(v.slice(0, 3)) ? "Almost! Check the letters." : "Try again.";
+        record(sec, i, label, word, raw.toUpperCase(), false);
+      }
+    }
+    card.querySelector('[data-a="check"]').onclick = check;
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+    card.querySelector('[data-a="hint"]').onclick = () => {
+      hints = Math.min(hints + 1, word.length - 1);
+      fb.className = "fb"; fb.textContent = "Starts with: " + word.slice(0, hints).toUpperCase() + "… (" + word.length + " letters)";
+    };
+    box.appendChild(card);
+  });
+}
+
+function buildMC(box) {
+  const sec = box.dataset.mc;
+  counts[sec] = DATA[sec].length;
+  DATA[sec].forEach(([stem, opts, ans, why], i) => {
+    const q = document.createElement("div");
+    q.className = "q";
+    const stemEl = document.createElement("div");
+    stemEl.className = "stem";
+    const parts = stem.split("____");
+    stemEl.append(parts[0]);
+    let blank = null;
+    if (parts.length > 1) { blank = document.createElement("span"); blank.className = "blank"; blank.textContent = "______"; stemEl.append(blank, parts[1]); }
+    const label = sec === "review" && i < 4 ? stem + " " + opts.join(" / ") : stem;
+    const ch = document.createElement("div"); ch.className = "choices";
+    const fb = document.createElement("div"); fb.className = "fb"; fb.setAttribute("aria-live", "polite");
+    q.append(stemEl, ch, fb);
+    const showSolved = (btn) => {
+      btn.classList.add("ok");
+      fb.className = "fb g"; fb.textContent = "Right! " + why;
+      if (blank) { blank.textContent = opts[ans]; blank.style.color = "var(--good)"; }
+    };
+    opts.forEach((o, j) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = o;
+      b.onclick = () => {
+        if ((log[sec] || {})[i] && log[sec][i].ok) return;
+        if (j === ans) { showSolved(b); record(sec, i, label, opts[ans], o, true); }
+        else {
+          b.classList.add("no");
+          fb.className = "fb b"; fb.textContent = "Not this one. Try again.";
+          record(sec, i, label, opts[ans], o, false);
+        }
+      };
+      ch.appendChild(b);
+      const prev = (log[sec] || {})[i];
+      if (prev && prev.ok && j === ans) showSolved(b);
+    });
+    box.appendChild(q);
+  });
+}
+
+load();
+document.querySelectorAll("[data-spell]").forEach(buildSpell);
+document.querySelectorAll("[data-mc]").forEach(buildMC);
+
+const sendFb = document.getElementById("sendfb");
+document.getElementById("send").onclick = async () => {
+  const text = buildReport();
+  if (navigator.share) {
+    try { await navigator.share({ text }); sendFb.className = "fb g"; sendFb.textContent = "Pick Papai in WhatsApp and send."; return; }
+    catch (e) { if (e && e.name === "AbortError") return; }
+  }
+  window.location.href = "https://wa.me/?text=" + encodeURIComponent(text);
+};
+document.getElementById("copy").onclick = async () => {
+  const text = buildReport();
+  try { await navigator.clipboard.writeText(text); sendFb.className = "fb g"; sendFb.textContent = "Copied! Paste it in WhatsApp for Papai."; }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents(document.getElementById("reportText"));
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    sendFb.className = "fb"; sendFb.textContent = "Text selected. Copy it and paste in WhatsApp.";
+  }
+};
+
+document.getElementById("reset").onclick = () => {
+  if (!document.getElementById("reset").dataset.armed) {
+    document.getElementById("reset").dataset.armed = "1";
+    document.getElementById("reset").textContent = "Tap again to erase everything";
+    setTimeout(() => { const r = document.getElementById("reset"); delete r.dataset.armed; r.textContent = "Start again"; }, 4000);
+    return;
+  }
+  log = {}; startedAt = null; save();
+  location.reload();
+};
+render();
+
+</script>
+
+</body>
+</html>
